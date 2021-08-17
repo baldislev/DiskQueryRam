@@ -1,0 +1,57 @@
+        conn.execute("CREATE TABLE Queries("
+                     "queryID INTEGER PRIMARY KEY,"
+                     "purpose TEXT NOT NULL,"
+                     "querySize INTEGER NOT NULL,"
+                     "CHECK(queryID>0),"
+                     "CHECK(querySize>=0))")
+
+        conn.execute("CREATE TABLE Disks("
+                     "diskID INTEGER PRIMARY KEY,"
+                     "diskCompany TEXT NOT NULL,"
+                     "speed INTEGER NOT NULL,"
+                     "freeSpace INTEGER NOT NULL,"
+                     "costPerByte INTEGER NOT NULL,"
+                     "CHECK(diskID>0),"
+                     "CHECK(speed>0),"
+                     "CHECK(freeSpace>=0),"
+                     "CHECK(costPerByte>0))")
+
+        conn.execute("CREATE TABLE RAMs("
+                     "ramID INTEGER PRIMARY KEY,"
+                     "ramSize INTEGER NOT NULL,"
+                     "ramCompany TEXT NOT NULL,"
+                     "CHECK(ramID>0),"
+                     "CHECK(ramSize>0))")
+
+        conn.execute("CREATE TABLE QueryOnDisk("
+                     "queryID INTEGER,"
+                     "diskID INTEGER,"
+                     "PRIMARY KEY(queryID, diskID),"
+                     "FOREIGN KEY(queryID) REFERENCES Queries(queryID) ON DELETE CASCADE,"
+                     "FOREIGN KEY(diskID) REFERENCES Disks(diskID) ON DELETE CASCADE)")
+
+        conn.execute("CREATE TABLE RAMOnDisk("
+                     "ramID INTEGER,"
+                     "diskID INTEGER,"
+                     "PRIMARY KEY(ramID, diskID),"
+                     "FOREIGN KEY(ramID) REFERENCES RAMs(ramID) ON DELETE CASCADE,"
+                     "FOREIGN KEY(diskID) REFERENCES Disks(diskID) ON DELETE CASCADE)")
+
+
+
+
+        conn.execute("DELETE FROM Queries CASCADE")
+        conn.execute("DELETE FROM Disks CASCADE")
+        conn.execute("DELETE FROM RAMs CASCADE")
+        conn.execute("DELETE FROM QueryOnDisk CASCADE")
+        conn.execute("DELETE FROM RAMOnDisk CASCADE")
+					 
+					 
+	
+
+	
+        conn.execute("DROP TABLE IF EXISTS Queries CASCADE")
+        conn.execute("DROP TABLE IF EXISTS Disks CASCADE")
+        conn.execute("DROP TABLE IF EXISTS RAMs CASCADE")
+        conn.execute("DROP TABLE IF EXISTS QueryOnDisk CASCADE")
+        conn.execute("DROP TABLE IF EXISTS RAMOnDisk CASCADE")
